@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Vinna Study Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --btn1: #4CAF50;
+      --btn2: #f44336;
+      --btn3: #2196F3;
+      --btn4: #ff9800;
+    }
+    body.dark {
+      --bg: #121212;
+      --text: #f0f0f0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: sans-serif;
+      padding: 2rem;
+      transition: 0.3s;
+    }
+    .hidden { display: none; }
+    .section { margin-bottom: 2rem; }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 6px;
+    }
+    #startBtn { background-color: var(--btn1); }
+    #loginBtn { background-color: var(--btn2); }
+    #registerBtn { background-color: var(--btn3); }
+    #logoutBtn { background-color: var(--btn4); }
+    input {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+    }
+    .toggle-mode {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: underline;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toggle-mode" onclick="toggleDarkMode()">🌙 Mode Gelap / Terang</div>
+
+  <!-- Halaman Awal -->
+  <div id="homePage">
+    <h1>Selamat Datang di Vinna Study Tool</h1>
+    <button id="startBtn" onclick="showLogin()">Masuk</button>
+    <button id="registerBtn" onclick="showRegister()">Daftar</button>
+  </div>
+
+  <!-- Halaman Login -->
+  <div id="loginPage" class="hidden">
+    <h2>Masuk</h2>
+    <input type="email" id="loginEmail" placeholder="Masukkan Gmail">
+    <input type="password" id="loginPassword" placeholder="Masukkan Password">
+    <button id="loginBtn" onclick="login()">Login</button>
+    <button onclick="backToHome()">Kembali</button>
+  </div>
+
+  <!-- Halaman Register -->
+  <div id="registerPage" class="hidden">
+    <h2>Daftar</h2>
+    <input type="email" id="registerEmail" placeholder="Masukkan Gmail">
+    <input type="password" id="registerPassword" placeholder="Buat Password">
+    <button id="registerBtn" onclick="register()">Daftar</button>
+    <button onclick="backToHome()">Kembali</button>
+  </div>
+
+  <!-- Aplikasi Utama -->
+  <div id="appPage" class="hidden">
+    <h2>Halo, selamat belajar!</h2>
+
+    <div class="section">
+      <h3>Catatan Pribadi</h3>
+      <textarea placeholder="Tulis catatanmu di sini..."></textarea>
+    </div>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    function showLogin() {
+      document.getElementById('homePage').classList.add('hidden');
+      document.getElementById('loginPage').classList.remove('hidden');
+    }
+
+    function showRegister() {
+      document.getElementById('homePage').classList.add('hidden');
+      document.getElementById('registerPage').classList.remove('hidden');
+    }
+
+    function backToHome() {
+      document.getElementById('homePage').classList.remove('hidden');
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('registerPage').classList.add('hidden');
+    }
+
+    function register() {
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      if (!email || !password) {
+        alert("Harap isi semua kolom.");
+        return;
+      }
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPassword', password);
+      alert("Pendaftaran berhasil. Silakan login.");
+      showLogin();
+    }
+
+    function login() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const savedEmail = localStorage.getItem('userEmail');
+      const savedPassword = localStorage.getItem('userPassword');
+
+      if (email === savedEmail && password === savedPassword) {
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('appPage').classList.remove('hidden');
+      } else {
+        alert("Email atau password salah.");
+      }
+    }
+
+    function logout() {
+      document.getElementById('appPage').classList.add('hidden');
+      document.getElementById('homePage').classList.remove('hidden');
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+
+</body>
+</html>
